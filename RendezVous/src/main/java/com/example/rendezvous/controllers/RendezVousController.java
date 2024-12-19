@@ -2,6 +2,7 @@ package com.example.rendezvous.controllers;
 
 import com.example.rendezvous.models.RendezVous;
 import com.example.rendezvous.repositories.RendezVousRepository;
+import com.example.rendezvous.services.GoogleCalendarRetryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,24 @@ public class RendezVousController {
 
     @Autowired
     private RendezVousRepository rendezVousRepository;
+
+    @Autowired
+    private GoogleCalendarRetryService googleCalendarRetryService;
+
+    @ApiOperation(value = "Ajouter un nouveau rendez-vous et l'ajouter au Google Calendar", notes = "Ajoute un rendez-vous et tente de l'ajouter au Google Calendar avec une logique de retry.")
+    @PostMapping("/addToCalendar")
+    public String addRendezVousToCalendar(@RequestParam("summary") String summary,
+                                          @RequestParam("location") String location,
+                                          @RequestParam("description") String description,
+                                          @RequestParam("startTime") String startTime,
+                                          @RequestParam("endTime") String endTime) {
+        try {
+            googleCalendarRetryService.createEventWithRetry(summary, location, description, startTime, endTime);
+            return "Rendez-vous ajouté au calendrier Google avec succès.";
+        } catch (RuntimeException e) {
+            return "Échec de l'ajout au calendrier Google après plusieurs tentatives.";
+        }
+    }
 
     @ApiOperation(value = "Récupérer un rendez-vous par ID", notes = "Renvoie un rendez-vous correspondant à l'ID spécifié")
     @GetMapping("/getById/{id}")

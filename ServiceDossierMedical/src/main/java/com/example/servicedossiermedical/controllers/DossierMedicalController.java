@@ -36,10 +36,10 @@ public class DossierMedicalController {
 
     @ApiOperation(value = "Ajouter un nouveau dossier médical", notes = "Ajoute un dossier médical dans la base de données")
     @PostMapping("/add")
-//    public DossierMedical addDossierMedical(@RequestBody DossierMedical dossierMedical) {
-//        System.out.println(dossierMedical);
-//        return dossierMedicalRepository.save(dossierMedical);
-//    }
+    public DossierMedical addDossierMedical(@RequestBody DossierMedical dossierMedical) {
+        System.out.println(dossierMedical);
+        return dossierMedicalRepository.save(dossierMedical);
+   }
 
     @ApiOperation(value = "Mettre à jour un dossier médical", notes = "Met à jour un dossier médical existant par ID")
     @PutMapping("/update/{id}")
