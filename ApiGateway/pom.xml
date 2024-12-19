@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example.howtodoinjava</groupId>
-    <artifactId>spring-hystrix-school-service</artifactId>
+    <artifactId>ApiGateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>spring-hystrix-school-service</name>
+    <name>ApiGateway</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -69,6 +69,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
+
+
 </project>
