@@ -21,30 +21,11 @@ public class DossierMedicalController {
     @Autowired
     private DossierMedicalRepository dossierMedicalRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    private static final String PATIENT_SERVICE_URL = "http://patient-service/patients/getById/";
-    private static final String PRATICIEN_SERVICE_URL = "http://praticien-service/practiciens/getById/";
-
     @ApiOperation(value = "Récupérer un dossier médical par ID", notes = "Renvoie un dossier médical correspondant à l'ID spécifié")
     @GetMapping("/getById/{id}")
     public DossierMedical getDossierById(@PathVariable("id") int id) {
         // Récupérer le dossier médical de la base de données
-        DossierMedical dossierMedical = dossierMedicalRepository.findById(id).orElse(null);
-
-        // Si le dossier existe, on récupère le patient et le praticien
-        if (dossierMedical != null) {
-            // Appeler le service Patient pour récupérer les détails du patient
-            Patient patient = restTemplate.getForObject(PATIENT_SERVICE_URL + dossierMedical.getPatient().getId(), Patient.class);
-            dossierMedical.setPatient(patient);
-
-            // Appeler le service Practicien pour récupérer les détails du praticien
-            Practicien praticien = restTemplate.getForObject(PRATICIEN_SERVICE_URL + dossierMedical.getPracticien().getId(), Practicien.class);
-            dossierMedical.setPracticien(praticien);
-        }
-
-        return dossierMedical;
+        return dossierMedicalRepository.findById(id).orElse(null);
     }
 
     @ApiOperation(value = "Lister tous les dossiers médicaux", notes = "Renvoie la liste complète des dossiers médicaux")
@@ -55,16 +36,10 @@ public class DossierMedicalController {
 
     @ApiOperation(value = "Ajouter un nouveau dossier médical", notes = "Ajoute un dossier médical dans la base de données")
     @PostMapping("/add")
-    public DossierMedical addDossierMedical(@RequestBody DossierMedical dossierMedical) {
-        // Appeler les services Patient et Practicien pour récupérer les détails avant d'ajouter
-        Patient patient = restTemplate.getForObject(PATIENT_SERVICE_URL + dossierMedical.getPatient().getId(), Patient.class);
-        Practicien praticien = restTemplate.getForObject(PRATICIEN_SERVICE_URL + dossierMedical.getPracticien().getId(), Practicien.class);
-
-        dossierMedical.setPatient(patient);
-        dossierMedical.setPracticien(praticien);
-
-        return dossierMedicalRepository.save(dossierMedical);
-    }
+//    public DossierMedical addDossierMedical(@RequestBody DossierMedical dossierMedical) {
+//        System.out.println(dossierMedical);
+//        return dossierMedicalRepository.save(dossierMedical);
+//    }
 
     @ApiOperation(value = "Mettre à jour un dossier médical", notes = "Met à jour un dossier médical existant par ID")
     @PutMapping("/update/{id}")

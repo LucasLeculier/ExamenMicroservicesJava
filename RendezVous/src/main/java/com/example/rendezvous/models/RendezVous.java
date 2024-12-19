@@ -1,12 +1,13 @@
-package com.example.servicedossiermedical.models;
+package com.example.rendezvous.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 @Entity
-public class DossierMedical {
+public class RendezVous {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,21 +21,16 @@ public class DossierMedical {
     @JoinColumn(name = "practicien_id", nullable = false)
     private Practicien praticien;
 
-    @ElementCollection
-    @CollectionTable(name = "historique", joinColumns = @JoinColumn(name = "dossier_medical_id"))
-    @Column(name = "historique")
-    private List<String> historique;
+    private LocalDateTime date;
 
-    public DossierMedical() {
+
+    public RendezVous() {
     }
 
-    public DossierMedical(Patient patient, Practicien praticien, List<String> historique) {
+    public RendezVous(Patient patient, Practicien praticien, LocalDateTime date) {
         this.patient = patient;
         this.praticien = praticien;
-        // Si l'historique est null ou vide, affecter la valeur par défaut
-        this.historique = (historique == null || historique.isEmpty())
-                ? List.of("Création du dossier Médical")
-                : historique;
+        this.date = date;
     }
 
     // Getters et Setters
@@ -61,12 +57,11 @@ public class DossierMedical {
     public void setPracticien(Practicien praticien) {
         this.praticien = praticien;
     }
-
-    public List<String> getHistorique() {
-        return historique;
+    public LocalDateTime getDate() {
+        return date;
+    }
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
-    public void setHistorique(List<String> historique) {
-        this.historique = historique;
-    }
 }
